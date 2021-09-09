@@ -16,8 +16,10 @@ firebaseをしようして音楽をアップロードして再生
 ## Reference
 *ログイン認証(長友さん)
 >https://blog.katsubemakito.net/firebase/firebase-authentication-email-web1
+
 *firestore
 >https://firebase.google.com/docs/firestore?hl=ja
+
 *strage
 >https://kido0617.github.io/js/2019-12-01-firebase-form-upload/
 >https://proengineer.internous.co.jp/content/columnfeature/5845#23
