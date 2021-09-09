@@ -1,0 +1,138 @@
+
+h1{
+  font-size: 16px;
+  margin: 20px 0 0;
+}
+#info{
+  margin-top: 0;
+  font-size: 8px;
+}
+
+.albam{
+  display: flex;
+  background-color: rgb(68, 68, 68);
+  margin: 0 20px;
+  border-radius: 10px;
+}
+input{
+  cursor: pointer;
+}
+input:hover{
+  opacity: 0.8;
+}
+.title img{
+  height: 100px;
+}
+.title{
+  padding: 10px;
+}
+h1, p, h2,div{
+  color: #ffffff;
+}
+h2{
+  font-size: 12px;
+}
+p{
+  font-size: 8px;
+}
+.flex{
+  display: flex;
+}
+.addButton{
+  padding: 4px 30px;
+  color:#ffffff;
+  background-color: rgb(99, 99, 99);
+  border:none;
+  border-radius: 10px;
+  font-size: 12px;
+  margin: 20px auto;
+  text-align: center;
+  box-shadow: 0 0 3px #6e6e6e ;
+  display: flex;
+  justify-content: center;
+}
+#songs input{
+  display: block;
+  
+}
+.inner{
+  margin: 0 auto;
+  max-width: 400px;
+  background: #000000;
+  padding: 0 4px 10px;
+}
+p,h2{
+  color: #ffffff;
+  margin: 0;
+}
+.titleContent{
+  padding: 10px;
+}
+
+
+/* アコーディオン */
+.accordion {
+  margin: 3em auto;
+  max-width: 60vw;
+  }
+  .toggle {
+  display: none;
+  }
+  .option {
+  position: relative;
+  margin:0 20px 20px;
+  }
+  .title,
+  .content {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: all 0.3s;
+  }
+  .title {
+  border: solid 1px #ccc;
+  padding: 1em;
+  display: block;
+  color: #333;
+  font-weight: bold;
+  display: flex;
+  background-color: rgb(68, 68, 68);
+  margin: 0 20px;
+  border-radius: 10px;
+  }
+  .title img{
+    width: 100px;
+    height: 100px;
+
+  }
+  .title::after,
+  .title::before {
+  content: "";
+  position: absolute;
+  right: 1.25em;
+  top: 1.25em;
+  width: 2px;
+  height: 0.75em;
+  background-color: #999;
+  transition: all 0.3s;
+  }
+  .title::after {
+  transform: rotate(90deg);
+  }
+  .content {
+  max-height: 0;
+  overflow: hidden;
+  }
+  .content p {
+  margin: 0;
+  padding: 0.5em 30px 1em;
+  font-size: 0.9em;
+  line-height: 1.5;
+  }
+  .toggle:checked + .title + .content {
+  max-height: 500px;
+  transition: all 1.5s;
+  }
+  .toggle:checked + .title::before {
+  transform: rotate(90deg) !important;
+  }

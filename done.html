@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hello Firebase Auth</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="inner">
+    <h1>...Please wait</h1>
+    <div id="info"></div>
+    <div id="title">
+      <h2>基本情報</h2>
+      <input placeholder="画像URL" type="text" id="addImg">
+      <input placeholder="アルバムタイトル" type="text" id="addTitle">
+      <input placeholder="アーティスト名" type="text" id="addArtist">
+    </div>
+    <div id="songs">
+      <h2>曲名</h2>
+      <div class="flex">
+        <input placeholder="1曲目" type="text" id="song1">
+        <input id="song1Data" type='file' accept='audio/*' multiple='multiple' name='imgs[]'>
+      </div>
+    </div>
+  
+    <input class="addButton" type="button" value="登録" onclick="clickBtn()">
+    <div id="list"></div>
+
+    <audio src=""></audio>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase.js"></script>
+  <script src="./config.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged( (user) => {
+      let h1   = document.querySelector('h1');
+      let info = document.querySelector('#info');
+      if(user) {
+        h1.innerText   = 'おかえりなさい';
+        info.innerHTML = `Hello!!${user.displayName}`;
+        console.log(user);
+      }
+      else {
+        h1.innerText = 'ログインできませんでした';
+      }
+    });
+    const db = firebase.firestore();
+    // 曲の登録
+    function clickBtn(){
+       // 曲データをfireStorageに登録
+      const song1 = document.getElementById("song1Data");  
+      var uploads = [];
+      for (var file of song1.files) {
+          //選択したファイルのファイル名を使うが、場合によってはかぶるので注意
+        var storageRef = firebase.storage().ref(file.name);
+        console.log(storageRef);
+        uploads.push(storageRef.put(file));
+      }
+      //すべての画像のアップロード完了を待つ
+      Promise.all(uploads).then(function () {
+        console.log('アップロード完了');
+      });
+      ref = firebase.storage().ref().child(storageRef.name);
+      ref.getDownloadURL().then((url) => {
+        // document.getElementById('image').src = url;
+        console.log(url);
+        const addImg = document.getElementById("addImg")
+      const addImgValue = addImg.value
+      console.log(addImgValue);
+
+      const addTitle = document.getElementById("addTitle")
+      const addTitleValue = addTitle.value
+      console.log(addTitleValue);
+      
+      const addArtist = document.getElementById("addArtist")
+      const addArtistValue = addArtist.value
+      console.log(addArtistValue);
+
+      const addSong1 = document.getElementById("song1")
+      const addSong1Value = addSong1.value
+      const addToken = url;
+      var result = addToken.slice( -36 );
+      console.log(result);
+      //基本情報登録
+      db.collection("music").add({ 
+        artist: addArtistValue,
+        title: addTitleValue, 
+        img: addImgValue,
+        song1: addSong1Value,
+        song1data: storageRef.name,
+        token: result,
+      }).then(docRef => {
+        console.log("登録");
+        alert("登録完了");
+      }).catch(error => {
+        console.log("エラー");
+        
+      })
+      });
+    }
+    // 曲の取得
+    db.collection("music").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            idName = doc.id;
+            console.log(idName);
+            //<div class="albam">生成
+              const newDiv = document.createElement("div");
+              newDiv.className = "option"
+              list.appendChild(newDiv);
+              //<img class="img" id="img" src="" alt="">生成
+              const newInput = document.createElement("input");
+              newInput.className = "toggle";
+              newInput.setAttribute("id",idName);
+              newInput.setAttribute("type","checkbox");
+              newDiv.appendChild(newInput);
+              //<img class="img" id="img" src="" alt="">生成
+              const newTitle = document.createElement("label");
+              newTitle.className = "title";
+              newTitle.setAttribute("for",idName);
+              newDiv.appendChild(newTitle);
+              //<img class="img" id="img" src="" alt="">生成
+              const newImg = document.createElement("img");
+              newImg.className = "img";
+              newImg.src =doc.data().img;
+              newTitle.appendChild(newImg);
+              const newTitleContent = document.createElement("div");
+              newTitleContent.className = "titleContent"
+              newTitle.appendChild(newTitleContent);
+              //<img class="img" id="img" src="" alt="">生成
+              const newH2 = document.createElement("h2");
+              newH2.textContent = doc.data().title;
+              newTitleContent.appendChild(newH2);
+              const newP = document.createElement("p");
+              newP.textContent = doc.data().artist;
+              console.log(newP);
+              newTitleContent.appendChild(newP);
+              //<div class="content">生成
+              const newContent = document.createElement("div");
+              newContent.className = "content"
+              newDiv.appendChild(newContent);
+              const newSong1 = document.createElement("p");
+              newSong1.textContent = doc.data().song1;
+              newContent.appendChild(newSong1);
+              const newFigure = document.createElement("figure");
+              newContent.appendChild(newFigure);
+              const newAudio = document.createElement("audio");
+              console.log(doc.data().song1data);
+              newAudio.setAttribute("src","https://firebasestorage.googleapis.com/v0/b/reacttodo-55904.appspot.com/o/" + "Sleep_Deprived.wav"+ "?alt=media&token=" + "f09737d8-ca46-455b-8891-26055e69949b");
+              console.log(doc.data().token)
+              newAudio.setAttribute("id","audio");
+              newAudio.setAttribute("controls","");
+              newFigure.appendChild(newAudio);
+          });
+      });
+  </script>
+</body>
+</html>
